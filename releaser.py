@@ -12,7 +12,7 @@ def fileList(fileName,reldir):
         files += [os.path.join(os.path.relpath(dirpath,reldir), file) for file in filenames]
     return files
 
-exclude = ['xtcf20','pacf','htpla','desktop.ini','Icon','Store']
+exclude = ['xtcf20','pacf','htpla','.ini','Icon','Store']
 path = os.path.dirname(os.path.realpath(__file__))
 #print(path)
 folder = os.path.join(path,'Profiles')
