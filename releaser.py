@@ -4,57 +4,30 @@ from distutils.dir_util import copy_tree
 import zipfile
 import shutil
 import glob
+import itertools as it
 
-def fileList(fileName):
+def fileList(fileName,reldir):
     files = list()
-    print('arrived')
     for (dirpath, dirnames, filenames) in os.walk(fileName):
-        files += [os.path.join(dirpath, file) for file in filenames]
+        files += [os.path.join(os.path.relpath(dirpath,reldir), file) for file in filenames]
     return files
 
-def getListOfFiles(dirName):
-    # create a list of file and sub directories
-    # names in the given directory
-    listOfFile = os.listdir(dirName)
-    allFiles = list()
-    # Iterate over all the entries
-    for entry in listOfFile:
-        # Create full path
-        fullPath = os.path.join(dirName, entry)
-        # If entry is a directory then get the list of files in this directory
-
-        if os.path.isdir(fullPath):
-            allFiles = allFiles + getListOfFiles(fullPath)
-        else:
-            print(entry)
-            allFiles.append(fullPath)
-
-    return allFiles
-
+exclude = ['xtcf20','pacf','htpla','desktop.ini','Icon','Store']
 path = os.path.dirname(os.path.realpath(__file__))
 #print(path)
-configFiles = fileList(os.path.join(path,"Profiles"))
 folder = os.path.join(path,'Profiles')
-#print(folder)
-print(len(configFiles))
+configFiles = fileList(os.path.join(path,"Profiles"),folder)
 
 
-"""
-for item in configFiles:
-    if 'Icon' in os.path.relpath(item):
-        print("Got it: ")
-        print(item)
-    else:
-        print("Normal file: ")
-        print(item)
+for cf in configFiles:
+    for ex in exclude:
+        if ex in cf:
+            configFiles.remove(cf)
 
-
-    # zip the file as a .curapackage so it's ready to go
-with zipfile.ZipFile(os.path.join('Nautilus.zip'), 'w') as zf:
+with zipfile.ZipFile('Nautilus.zip', 'w') as zf:
     # add everything relevant
     for item in configFiles:
-        print(item)
-        zf.write(item)
+        if not os.path.isdir(item):
+            zf.write(os.path.join(folder,item),item)
 zf.close()
 print("Update version numbers before release!")
-"""
