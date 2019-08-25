@@ -24,6 +24,8 @@ for cf in configFiles:
         if ex in cf:
             configFiles.remove(cf)
 
+configFiles.remove('nautilusvars\desktop.ini')
+
 with zipfile.ZipFile('Nautilus.zip', 'w') as zf:
     # add everything relevant
     for item in configFiles:
