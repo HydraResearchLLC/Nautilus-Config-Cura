@@ -247,6 +247,13 @@
 		"support_fan_enable": { "value": "cool_fan_enabled" },
 		"support_supported_skin_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
 
+    "raft_margin":{ "value": "2"},
+    "raft_smoothing": { "value": "2" },
+    "raft_airgap": {"value": "0.2" },
+    "raft_surface_layers": { "value": "1" },
+    "raft_surface_line_width": { "value": "support_interface_line_width" },
+    "raft_surface_line_spacing": { "value": "support_roof_line_distance"},
+
 		"slicing_tolorance": { "value": "'middle'" },
 		"minimum_polygon_circumference": { "value": "machine_nozzle_size * 2 " },
 		"coasting_enable": { "value": "False" },
