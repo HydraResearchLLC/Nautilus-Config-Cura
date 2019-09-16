@@ -201,7 +201,7 @@
 		"retraction_hop_only_when_collides": { "value": "False" },
 		"travel_avoid_other_parts": { "value": "True" },
     "travel_avoid_supports": { "value": "True" },
-		"retraction_hop": { "default_value": 0.2 },
+		"retraction_hop": { "default_value": 0.4 },
 
   	"cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
 		"cool_fan_speed_0": { "value": "0"},
