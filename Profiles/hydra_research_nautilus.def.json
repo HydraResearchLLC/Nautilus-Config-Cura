@@ -215,7 +215,7 @@
     "minimum_support_area": { "value": "line_width * 2"},
 		"support_interface_enable": { "value": "True" },
 		"support_interface_height": {
-      "value": "layer_height * 3 if layer_height < 0.15 else layer_height * 2",
+      "value": "layer_height * 5 if layer_height < 0.15 else layer_height * 2",
       "minimum_value_warning": "layer_height * 2"
     },
     "support_roof_height": {"minimum_value_warning": "layer_height * 2"},
