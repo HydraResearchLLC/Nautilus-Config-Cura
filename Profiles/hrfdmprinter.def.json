@@ -4471,7 +4471,7 @@
                     "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * 8",
-                    "value": "resolveOrValue('layer_height')",
+                    "value": "resolveOrValue('layer_height') * 2 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
