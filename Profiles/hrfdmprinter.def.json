@@ -1889,7 +1889,7 @@
                     "minimum_value": "resolveOrValue('layer_height') if infill_line_distance > 0 else -999999",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * (1.45 if spaghetti_infill_enabled else 8) if infill_line_distance > 0 else 999999",
-                    "value": "resolveOrValue('layer_height') * 2 if 3 > math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height') * 3 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 2.9 else resolveOrValue('layer_height')",
+                    "value": "resolveOrValue('layer_height') if not infill_support_layer_height_optimization_enable else resolveOrValue('layer_height') * 2 if 3 > math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height') * 3 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 2.9 else resolveOrValue('layer_height')",
                     "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
@@ -3165,6 +3165,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "infill_support_layer_height_optimization_enable":
+                {
+                    "label": "Optimize Infill/Support Layer Height",
+                    "description": "Enableling this generates infill and support infill at 2-3 times the layer hieght if possible. This can significantly decrease print times for low layer height jobs.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "acceleration_enabled":
                 {
                     "label": "Enable Acceleration Control",
@@ -4231,7 +4240,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 15,
-                    "value": "15 if support_enable else 0 if support_tree_enable else 15",
+                    "value": "(30 if layer_height < machine_nozzle_size * 0.37 else 15) if support_enable else 0 if support_tree_enable else (30 if layer_height < machine_nozzle_size * 0.37 else 15)",
                     "enabled": "support_enable or support_tree_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
@@ -4263,7 +4272,7 @@
                             "minimum_value_warning": "support_line_width",
                             "default_value": 2.66,
                             "enabled": "support_enable or support_tree_enable",
-                            "value": "support_line_distance",
+                            "value": "0 if support_infill_rate == 0 else (support_line_width * 100) / 60 * (2 if support_pattern == 'grid' else (3 if support_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -4302,6 +4311,7 @@
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
                     "enabled": "support_enable or support_tree_enable",
+                    "value": "brim_width / 2",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4348,7 +4358,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable or support_tree_enable",
-                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') if machine_nozzle_size/support_z_distance < 2.7 else 2 * support_z_distance",
+                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -4459,6 +4469,7 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
+                    "value": "line_width",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -4472,7 +4483,7 @@
                     "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * 8",
-                    "value": "resolveOrValue('layer_height') * 2 if 3 > math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height') * 3 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 2.9 else resolveOrValue('layer_height')",
+                    "value": "resolveOrValue('layer_height') * 2 if 2.9 > math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height') * 3 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 2.9 else resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
@@ -4486,6 +4497,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'zigzag' or support_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
+                    "value": "1 if layer_height < machine_nozzle_size * 0.37 else 0",
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
@@ -4499,6 +4511,7 @@
                     "default_value": 1,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
+                    "value": "layer_height * 3",
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0 and gradual_support_infill_steps > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
@@ -4557,7 +4570,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "layer_height * 5 if layer_height < 0.15 else layer_height * 2",
+                    "value": "layer_height * 3 if layer_height < machine_nozzle_size * 0.37 else layer_height * 2",
                     "minimum_value": "0",
                     "minimum_value_warning": "layer_height * 2",
                     "maximum_value_warning": "10",
@@ -4574,7 +4587,7 @@
                             "type": "float",
                             "default_value": 1,
                             "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + layer_height",
+                            "minimum_value_warning": "layer_height * 2",
                             "maximum_value_warning": "10",
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
                             "limit_to_extruder": "support_roof_extruder_nr",
@@ -4834,7 +4847,7 @@
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0.0,
-                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset') * -1",
                             "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
