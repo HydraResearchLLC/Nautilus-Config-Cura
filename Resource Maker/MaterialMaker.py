@@ -38,7 +38,7 @@ def downloader(FILENAME):
     SCOPES = 'https://www.googleapis.com/auth/drive.readonly'
     store = file.Storage('storage.json')
     creds = store.get()
-    path = os.path.join(os.path.dirname(__file__),'..')
+    path = os.path.dirname(__file__)
 
     if not creds or creds.invalid:
         secret = os.path.join(path,'client_secret.json')
@@ -67,7 +67,7 @@ def downloader(FILENAME):
             print('!!! ERROR: File not found')
 
 
-        dirName = os.path.join(path,'Profiles','nautilusmat')
+        dirName = os.path.join(path,'materials')
         if not os.path.exists(dirName):
             os.mkdir(dirName)
             print("Directory " , dirName ,  " Created ")
@@ -76,12 +76,18 @@ def downloader(FILENAME):
 
         sheet = open(fn)
         sheetData = np.genfromtxt(sheet, delimiter = '\t', dtype=np.dtype(('U', 512)),filling_values=1)
-
-        sheetData = np.delete(sheetData, (0), axis=0)
+        enabledData = sheetData[1,1:]
+        skipPoint = np.where(enabledData == "no")[0]
+        sheetData = np.delete(sheetData, (0,1), axis=0)
         catTitles = sheetData[:,0]
+
         for i in range(1,len(sheetData[1])):
-            catData = [s.replace('@',' ') for s in sheetData[:,i]]
-            xmlCrafter(catTitles,catData,dirName)
+            if i-1 in skipPoint:
+                print(i)
+                continue
+            else:
+                catData = [s.replace('@',' ') for s in sheetData[:,i]]
+                xmlCrafter(catTitles,catData,dirName)
     return
 
 def xmlCrafter(titles,data,directory):

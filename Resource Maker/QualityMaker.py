@@ -18,16 +18,18 @@ import shutil
 import numpy as np
 import requests
 
-dirName = os.path.join(os.path.dirname(__file__),'..','Profiles','nautilusquals')
+dirName = os.path.join(os.path.dirname(__file__),'quality')
+intentDirName = os.path.join(os.path.dirname(__file__),'intent')
 
-if not os.path.exists(dirName):
-    os.mkdir(dirName)
-    print("Directory " , dirName ,  " Created ")
-else:
-    print("Directory " , dirName ,  " already exists")
-    shutil.rmtree(dirName)
-    os.mkdir(dirName)
 
+def directoryBuilder(dirName):
+    if not os.path.exists(dirName):
+        os.mkdir(dirName)
+        print("Directory " , dirName ,  " Created ")
+    else:
+        print("Directory " , dirName ,  " already exists")
+        shutil.rmtree(dirName)
+        os.mkdir(dirName)
 
 def downloader(FILENAME):
     SCOPES = 'https://www.googleapis.com/auth/drive.readonly'
@@ -70,12 +72,17 @@ def downloader(FILENAME):
     return data,dt
 
 def qualBuilder(sheetName):
+    matlist = []
     data,dt = downloader(sheetName)
     data1 = data
 
+    enabledData = data[2,1:]
+    intentData = data[3,1:]
     headers=data[[0,1],:]
-    data = np.delete(data,(0,1),0) #delete rows
+    data = np.delete(data,(0,1,2,3),0) #delete rows
 
+    skipPoint = np.where(enabledData == "no")[0]
+    intentPoint = np.where(intentData == "yes")[0]
 
     titles=data[:,0]
     data = np.delete(data, 0,1) #delete columns
@@ -87,6 +94,8 @@ def qualBuilder(sheetName):
 
     for i in range(r):
         for j in range(c):
+            if j in skipPoint:
+                continue
             if i in (0,4,5,12,13):
                 profs[i,j]=titles[i]
             else:
@@ -95,15 +104,52 @@ def qualBuilder(sheetName):
                 else:
                     profs[i,j]= ""
 
+
+    for k in range(c):
+        if k in skipPoint:
+            continue
+        varient=data[11,k]
+        name = data[10,k]
+        matName = name
+        name = name[0:2]+'n'+name[2:]
+        filename = (dirName + '/' + name + '_' + varient + '_' + data[8,k] +'.inst.cfg').replace(' ','_')
+        np.savetxt(filename, profs[:,k], newline='\n',fmt='%s')
+        if k in intentPoint:
+            qualType = data[8,k].replace(' ','_')
+            if '0.4' in sheetName:
+                intentBuilder(matName, qualType)
+    return
+
+def intentBuilder(matName, qualType):
+    data = intentData
+    dt = intentdt
+    data = np.delete(data,(0,1),0)
+    titles = data[:,0]
+    np.delete(data,0,1)
+    data = data[:,data[9]==qualType]
+
+    r,c=np.shape(data)
+    profs = np.zeros((r,c))
+    profs = np.array(profs,dtype=dt)
+
+    for i in range(r):
+        for j in range(c):
+            if i in (0,4,5,12,13):
+                profs[i,j]=titles[i]
+            else:
+                if i == 10:
+                    profs[i,j]=titles[i]+' = '+ matName
+                elif len(data[i,j])!=0:
+                    profs[i,j]=(titles[i]+' = '+data[i,j]).replace('@','=')
+                else:
+                    profs[i,j]= ""
+
     for k in range(c):
         varient=data[11,k]
         name = data[10,k]
-        name = name[0:2]+'n'+name[2:]
-        varient=varient.replace(' ','_')
-        filename = dirName + '/' + name + '_' + varient + '_' + data[8,k]+'.inst.cfg'
-        print(filename)
+        name = matName[0:2]+'n'+matName[2:]
+        filename = (intentDirName + '/' + name + '_' + varient + '_' + qualType + '_' + data[8,k] +'.inst.cfg').replace(' ','_')
         np.savetxt(filename, profs[:,k], newline='\n',fmt='%s')
-    return
 
 def globalQualBuilder(sheetName):
     data,dt = downloader(sheetName)
@@ -142,6 +188,9 @@ def globalQualBuilder(sheetName):
         np.savetxt(filename, profs[:,k], newline='\n',fmt='%s')
     return
 
+directoryBuilder(dirName)
+directoryBuilder(intentDirName)
+intentData, intentdt = downloader('UC Quality Intent')
 qualBuilder('UC Quality B 0.25')
 qualBuilder('UC Quality X 0.40')
 qualBuilder('UC Quality X 0.80')
