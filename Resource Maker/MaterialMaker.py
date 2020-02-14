@@ -83,7 +83,7 @@ def downloader(FILENAME):
 
         for i in range(1,len(sheetData[1])):
             if i-1 in skipPoint:
-                print(i)
+                #print(i)
                 continue
             else:
                 catData = [s.replace('@',' ') for s in sheetData[:,i]]
