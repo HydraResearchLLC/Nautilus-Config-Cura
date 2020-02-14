@@ -18,7 +18,7 @@
         "variants_name": "Tool Cartridge",
         "preferred_material": "hr_fillamentum_pla_extrafill",
         "preferred_variant_name": "X 400",
-        "preferred_quality_type": "Normal",
+        "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
             "0": "hydra_research_nautilus_extruder"
@@ -90,10 +90,16 @@
 		"infill_before_walls": { "value": "False" },
 		"skin_preshrink": { "value": "line_width * 2.22" },
 
+    "material_print_temperature": {
+      "maximum_value_warning": "300"
+    },
+    "material_print_temperature_layer_0": {
+      "maximum_value_warning": "300"
+    },
     "material_standby_temperature": { "value": "0" },
 		"material_bed_temperature_layer_0": {
-		"minimum_value_warning": "25",
-		"value": "default_material_bed_temperature - 5"
+		    "minimum_value_warning": "25",
+		     "value": "default_material_bed_temperature - 5"
 		},
 		"retraction_enable": { "value": "True" },
 		"retract_at_layer_change": { "value": "True" },
@@ -196,7 +202,6 @@
     "cool_fan_speed": { "value": "50" },
     "cool_min_speed": { "value": "5" },
     "cool_min_layer_time_fan_speed_max": {"value": "4"},
-    "cool_min_layer_time": {"value": "20"},
     "cool_min_speed": {"value": "math.ceil((speed_volumetric_min / (line_width * layer_height)) if (speed_volumetric_min / (line_width * layer_height)) > 15 else speed_print if speed_print < 15 else 15)"},
 
     "support_conical_enabled": { "value": "True" },
@@ -233,11 +238,6 @@
 		"coasting_volume": { "value": "(machine_nozzle_size ** 3) / 2" },
 		"coasting_min_volume": { "value": "(machine_nozzle_size ** 3) * 2" },
 		"coasting_speed": { "value": "speed_wall_0" },
-		"bridge_settings_enabled": { "value": "True" },
-		"bridge_enable_more_layers": { "value": "True" },
-    "bridge_wall_min_length": {"value": "2" },
-    "bridge_skin_support_threshold": {"value": "50" },
-    "bridge_wall_coast": {"value": "100" },
 		"bridge_wall_speed": { "value": "speed_print if speed_print < 30 else cool_min_speed if cool_min_speed > 30 else 30" },
     "bridge_skin_speed": { "value": "speed_print if speed_print < 30 else cool_min_speed if cool_min_speed > 30 else 30" },
 		"bridge_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
