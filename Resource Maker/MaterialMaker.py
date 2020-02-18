@@ -80,14 +80,22 @@ def downloader(FILENAME):
         skipPoint = np.where(enabledData == "no")[0]
         sheetData = np.delete(sheetData, (0,1), axis=0)
         catTitles = sheetData[:,0]
-
+        matcostdata = '{'
         for i in range(1,len(sheetData[1])):
             if i-1 in skipPoint:
                 #print(i)
                 continue
             else:
                 catData = [s.replace('@',' ') for s in sheetData[:,i]]
+                GUIDdata = catData[5]
+                Costdata = catData[13]
+                Weightdata = catData[14]
+                matcostdata+='\"'+GUIDdata+'\": {\"spool_weight\": '+Weightdata+', \"spool_cost\": '+Costdata+'},'
                 xmlCrafter(catTitles,catData,dirName)
+        matcostdata = matcostdata[:-1]+'}'
+        myfile = open(os.path.join(path,'matCosts.txt'),'w')
+        myfile.write(matcostdata)
+
     return
 
 def xmlCrafter(titles,data,directory):
