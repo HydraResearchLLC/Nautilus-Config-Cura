@@ -2847,7 +2847,34 @@
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                }
+                },
+                "material_name":
+                        {
+                            "label": "Material Name",
+                            "description": "Name of material, used for gcode output metadata",
+                            "unit": "",
+                            "type": "str",
+                            "default_value": "Unknown",
+        					          "settable_per_extruder": true,
+                            "settable_per_mesh": false
+        				},
+        				"material_print_surface":
+                        {
+                            "label": "Recommended Print Surface",
+                            "description": "Recommended Print Surface for this material. Used for gcode output metadata.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "PEI": "PEI",
+                                "BuildTak Original": "BuildTak Original",
+                                "Garrolite": "Garrolite",
+                                "PP": "PP",
+                                "Use bed adhesive": "Use bed adhesive",
+                                "Unkown": "Unknown"
+                            },
+                            "default_value": "Unknown",
+                            "settable_per_mesh": false
+        				}
             }
         },
         "speed":
