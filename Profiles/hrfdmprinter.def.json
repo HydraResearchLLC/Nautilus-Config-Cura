@@ -17,8 +17,9 @@
         {
             "0": "hrfdmextruder"
         },
-        "supports_usb_connection": true,
-        "supports_network_connection": false
+        "supports_usb_connection": false,
+        "supports_network_connection": false,
+        "supported_actions": ["NautilusConnections"]
     },
     "settings":
     {
