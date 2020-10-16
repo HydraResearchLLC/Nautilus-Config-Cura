@@ -33,6 +33,12 @@
         <setting key="print temperature">210</setting>
       </hotend>
     </machine>
+    <machine>
+      <machine_identifier manufacturer="Hydra Research" product="Minnow" />
+      <hotend id="X 400">
+        <setting key="hardware compatible">yes</setting>
+      </hotend>
+    </machine>
     <setting key="print temperature">220</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
