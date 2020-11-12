@@ -272,6 +272,25 @@
                           "settable_per_mesh": false
   				            }
   			         }
+		 },
+		"material":
+		{
+			"children":
+			{
+        "material_door_status":
+                {
+                    "label": "Material Door Status",
+                    "description": "Should the door be open or closed for printing this material. This only effects the popup message at the begining of a print job",
+                    "type": "enum",
+                    "options":
+                    {
+                        " ": "Open",
+                        ";": "Closed"
+                    },
+                    "default_value": ";",
+                    "settable_per_mesh": false
   		 }
   	}
   }
+	}
+}
