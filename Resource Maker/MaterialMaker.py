@@ -105,19 +105,27 @@ def xmlCrafter(titles,data,directory):
     properties = ET.SubElement(fdmmaterial, 'properties')
     settings = ET.SubElement(fdmmaterial,'settings')
     machine = ET.SubElement(settings,'machine')
-    machineidentifier = ET.SubElement(machine, 'machine_identifier', manufacturer='Hydra Research', product='Hydra Research Nautilus')
-    headers = [name, metadata, properties, settings,machine]
-
+    machine2 = ET.SubElement(settings,'machine')
+    headers = [name, metadata, properties, settings, machine, machine2]
     i=k=0
     colonSignal = list(titles).index("material_flow")
 
     for j in range(len(titles)):
+        print(titles[j]+' for k ='+str(k))
         if titles[j] == '':
             k+=1
             i = 0
             if k==1 or k == 3:
                 i+=1
             continue
+        if titles[j][0]=='-':
+            print('hyphen')
+            if 'nautilus' in titles[j]:
+                machine_identifier = ET.SubElement(machine, 'machine_identifier', manufacturer='Hydra Research', product='Hydra Research Nautilus')
+                mac = machine
+            elif 'minnow' in titles[j]:
+                machine_identifier1 = ET.SubElement(machine2, 'machine_identifier', manufacturer='Hydra Research', product='Hydra Research Minnow')
+                mac = machine2
         if data[j] == '':
             continue
         elif k < 3:
@@ -129,12 +137,14 @@ def xmlCrafter(titles,data,directory):
                 headers[k].append(ET.Element('setting', key = titles[j]))
             else:
                 headers[k].append(ET.Element('cura:setting', key = titles[j]))
-            headers[k][i].text = data[j]
+            headers[k][i+1].text = data[j]
+            #print('setting: '+str(titles[j])+' to: '+str(data[j]))
+            #print(k)
             i+=1
         elif k > 3:
             if 'hot' in titles[j]:
                 l = 0
-                hotend = ET.SubElement(machine, titles[j], id = data[j])
+                hotend = ET.SubElement(mac, titles[j], id = data[j])
             elif '_' in titles[j]:
                 hotend.append(ET.Element('cura:setting', key = titles[j]))
                 hotend[l].text = data[j]
@@ -152,4 +162,5 @@ def xmlCrafter(titles,data,directory):
     myfile.write(mydata)
     return
 
-downloader('Nautilus Materials')
+downloader('Hydra Research Materials')
+#downloader('Test Material')
