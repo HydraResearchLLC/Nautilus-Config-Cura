@@ -7,7 +7,7 @@
         "author": "Ultimaker & Hydra Research",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 15,
+        "setting_version": 16,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -2196,8 +2196,8 @@
                               "settable_per_mesh": true
                          }
                     }
-                }
-        },
+                },
+
         "material":
         {
             "label": "Material",
@@ -7993,3 +7993,4 @@
             }
         }
     }
+}
