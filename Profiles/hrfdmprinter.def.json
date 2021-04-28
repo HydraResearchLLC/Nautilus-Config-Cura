@@ -1925,15 +1925,15 @@
                               "cross_3d": "Cross 3D",
                               "gyroid": "Gyroid"
                           },
-                          "default_value": "Tri-Hexagon",
+                          "default_value": "trihexagon",
                           "enabled": "infill_sparse_density > 0",
                           "limit_to_extruder": "infill_extruder_nr",
                           "settable_per_mesh": true
                         }
                     }
-                        }
-                    }
-                },
+                  },
+
+
 
                 "zig_zaggify_infill":
                 {
@@ -2196,7 +2196,9 @@
                               "settable_per_mesh": true
                          }
                     }
-                },
+                }
+              }
+        },
 
         "material":
         {
