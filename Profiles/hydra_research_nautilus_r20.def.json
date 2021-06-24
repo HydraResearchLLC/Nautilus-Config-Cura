@@ -227,7 +227,7 @@
     "raft_surface_line_width": { "value": "support_interface_line_width" },
     "raft_surface_line_spacing": { "value": "support_roof_line_distance"},
 
-		"slicing_tolorance": { "value": "'middle'" },
+		"slicing_tolerance": { "value": "'middle'" },
 		"minimum_polygon_circumference": { "value": "machine_nozzle_size * 2 " },
 		"coasting_enable": { "value": "False" },
 		"coasting_volume": { "value": "(machine_nozzle_size ** 3) / 2" },
