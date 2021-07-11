@@ -44,6 +44,14 @@
         <cura:setting key="speed_volumetric_max">15</cura:setting>
       </hotend>
     </machine>
+    <machine>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow R22" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.025</cura:setting>
+        <cura:setting key="speed_volumetric_max">15</cura:setting>
+      </hotend>
+    </machine>
     <setting key="print temperature">220</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
