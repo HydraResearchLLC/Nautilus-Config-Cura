@@ -87,7 +87,6 @@
 
 		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
 		"infill_overlap": { "value": "25" },
-		"skin_overlap": { "value": "5" },
 		"infill_before_walls": { "value": "False" },
 		"skin_preshrink": { "value": "line_width * 2.22" },
 
