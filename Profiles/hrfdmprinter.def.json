@@ -6107,7 +6107,7 @@
                     "unit": "mm³",
                     "type": "float",
                     "default_value": 6,
-                    "value": "2 * 3.14 * (prime_tower_size - (2 * prime_tower_line_width)) * prime_tower_line_width * layer_height",
+                    "value": "(2 * 3.14 * (prime_tower_size - (2 * prime_tower_line_width)) * prime_tower_line_width * layer_height) if (2 * 3.14 * (prime_tower_size - (2 * prime_tower_line_width)) * prime_tower_line_width * layer_height) > 6 else 6 ",
                     "minimum_value": "0",
                     "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
