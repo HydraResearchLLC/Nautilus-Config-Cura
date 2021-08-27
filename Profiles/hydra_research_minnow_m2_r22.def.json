@@ -21,13 +21,13 @@
         "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
-            "0": "hydra_research_minnow_r22_extruder0",
-            "1": "hydra_research_minnow_r22_extruder1"
+            "0": "hydra_research_minnow_m2_r22_extruder0",
+            "1": "hydra_research_minnow_m2_r22_extruder1"
         }
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Minnow R22" },
+        "machine_name": { "default_value": "Minnow M2 (r22)" },
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 250 },
         "machine_height": { "default_value": 195 },
