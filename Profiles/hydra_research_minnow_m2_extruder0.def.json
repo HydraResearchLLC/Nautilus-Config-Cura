@@ -1,17 +1,17 @@
 {
-    "id": "hydra_research_minnow_m2_r22_extruder1",
+    "id": "hydra_research_minnow_m2_extruder0",
     "version": 2,
-    "name": "Tool 2",
+    "name": "Tool 1",
     "inherits": "hrfdmextruder",
     "metadata": {
-        "machine": "hydra_research_minnow_m2_r22",
+        "machine": "hydra_research_minnow_m2",
         "position": "0"
     },
 
     "overrides": {
         "extruder_nr": {
-            "default_value": 1,
-            "maximum_value": "1"
+            "default_value": 0,
+            "maximum_value": "0"
         },
         "machine_nozzle_size": { "default_value": 0.4 },
         "material_diameter": { "default_value": 1.75 },
