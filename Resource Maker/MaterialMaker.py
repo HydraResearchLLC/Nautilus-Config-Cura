@@ -123,6 +123,9 @@ def xmlCrafter(titles,data,directory):
             if 'nautilus' in titles[j]:
                 machine_identifier = ET.SubElement(machine, 'machine_identifier', manufacturer='Hydra Research', product='Hydra Research Nautilus')
                 mac = machine
+            elif 'm2' in titles[j]:
+                machine_identifier = ET.SubElement(machine, 'machine_identifier', manufacturer='Hydra Research', product='Hydra Research Minnow M2')
+                mac = machine
             elif 'minnow' in titles[j]:
                 machine_identifier1 = ET.SubElement(machine2, 'machine_identifier', manufacturer='Hydra Research', product='Hydra Research Minnow')
                 mac = machine2
