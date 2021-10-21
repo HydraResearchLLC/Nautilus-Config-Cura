@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "Minnow M2",
-    "inherits": "hydra_research_excluded_materials",
+    "inherits": "hydra_research_minnow_m2_excluded_materials",
     "metadata": {
         "visible": true,
         "author": "Hydra Research",
@@ -223,7 +223,6 @@
     "support_bottom_stair_step_height": {"value": "0.3"},
     "support_brim_enable": { "value": "True" },
 		"brim_width": { "default_value": 8 },
-		"skirt_gap":{ "value": "line_width * 3" },
 		"support_fan_enable": { "value": "cool_fan_enabled" },
 		"support_supported_skin_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
 
