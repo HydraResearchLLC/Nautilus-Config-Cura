@@ -137,6 +137,7 @@
          "limit_to_extruder":"infill_extruder_nr",
          "settable_per_mesh":true
       },
+      "material_print_temperature":  {"value": "default_material_print_temperature + tool_material_print_temperature_offset"},
       "roofing_material_flow":{
          "label":"Top Surface Skin Flow",
          "description":"Flow compensation on lines of the areas at the top of the print.",
