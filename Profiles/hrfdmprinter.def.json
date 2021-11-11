@@ -63,15 +63,7 @@
          "limit_to_extruder":"top_bottom_extruder_nr",
          "settable_per_mesh":true
       },
-      "skin_monotonic":{
-         "label":"Monotonic Top/Bottom Order",
-         "description":"Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
-         "type":"bool",
-         "default_value":false,
-         "enabled":"(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric')",
-         "limit_to_extruder":"top_bottom_extruder_nr",
-         "settable_per_mesh":true
-      },
+      "skin_monotonic":{ "default_value":true},
       "skin_outline_count":{
          "label":"Extra Skin Wall Count",
          "description":"Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
