@@ -460,6 +460,7 @@
          "settable_per_mesh":false,
          "settable_per_extruder":true
       },
+      "prime_tower_enable": {"default_value": true},
       "prime_tower_size":{
          "label":"Prime Tower Size",
          "description":"The width of the prime tower.",
