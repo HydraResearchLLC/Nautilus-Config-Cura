@@ -15,6 +15,7 @@ from oauth2client import file, client, tools
 import xml.etree.ElementTree as ET
 import tempfile
 import xmltodict
+import json
 
 import numpy as np
 import requests
@@ -77,10 +78,15 @@ def downloader(FILENAME):
         sheet = open(fn)
         sheetData = np.genfromtxt(sheet, delimiter = '\t', dtype=np.dtype(('U', 512)),filling_values=1)
         enabledData = sheetData[1,1:]
+        excTitleData = []
+        for i in range(1,len(sheetData[1])):
+            excTitleData.append(('hr_'+sheetData[2,i]+'_'+sheetData[3,i]+'.xml.fdm_material').lower())
+        #excData = np.vstack((np.array(excTitleData),sheetData[53,1:],sheetData[75,1:],sheetData[84,1:])) #make sure these are the lines where the hardware compatible for 0.4mm nozzle is for each printer
         skipPoint = np.where(enabledData == "no")[0]
         sheetData = np.delete(sheetData, (0,1), axis=0)
         catTitles = sheetData[:,0]
         matcostdata = '{'
+        #exclusionCrafter(excData)
         for i in range(1,len(sheetData[1])):
             if i-1 in skipPoint:
                 #print(i)
@@ -164,6 +170,61 @@ def xmlCrafter(titles,data,directory):
     myfile = open(titlename,'w')
     myfile.write(mydata)
     return
+
+def exclusionCrafter(data):
+    nautilusExclusion = []
+    minnowExclusion = []
+    minnowM2Exclusion = []
+    path = os.path.dirname(__file__)
+
+    i=0
+    j=0
+    k=0
+    while i < len(data[0,:]):
+        if 'no' in data[1,i]:
+            nautilusExclusion.append(data[0,i])
+        i += 1
+
+    while j < len(data[0,:]):
+        if 'no' in data[2,j]:
+            minnowExclusion.append(data[0,j])
+        j += 1
+
+    while k < len(data[0,:]):
+        if 'no' in data[3,k]:
+            minnowM2Exclusion.append(data[0,k])
+        k += 1
+
+    folder = os.path.join(path,'exclusion')
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+        print("Directory " , folder ,  " Created ")
+    else:
+        print("Directory " , folder ,  " already exists")
+
+    with open('hydra_research_excluded_materials.json','r') as f:
+        doc = f.read()
+        obj = json.loads(doc)
+
+
+        obj['metadata']['exclude_materials'] = str(nautilusExclusion)
+
+        with open(os.path.join(folder,'hydra_research_nautilus_excluded_materials.def.json'),'w') as g:
+            g.write(json.dumps(obj,indent=4))
+            g.close()
+
+        obj['metadata']['exclude_materials'] = str(minnowExclusion)
+
+        with open(os.path.join(folder,'hydra_research_minnow_excluded_materials.def.json'),'w') as g:
+            g.write(json.dumps(obj,indent=4))
+            g.close()
+
+        obj['metadata']['exclude_materials'] = str(minnowM2Exclusion)
+
+        with open(os.path.join(folder,'hydra_research_minnow_m2_excluded_materials.def.json'),'w') as g:
+            g.write(json.dumps(obj,indent=4))
+            g.close()
+        f.close()
 
 downloader('Hydra Research Materials')
 #downloader('Test Material')
